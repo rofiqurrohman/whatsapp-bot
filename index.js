@@ -8,51 +8,51 @@ const ms = require('parse-ms')
 const HandleMsg = require('./HandleMsg')
 
 const sleep = async (ms) => {
-        return new Promise(resolve => setTimeout(resolve, ms))
+    return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-const start = async (urbae = new urbae()) => {
+const start = async (dombago = new dombago()) => {
     console.log(color('------------------------------------------------------------------------', 'white'))
-    console.log(color(figlet.textSync('Urbaeexyz Bot', { font: 'Ghost', horizontalLayout: 'default' })))
+    console.log(color(figlet.textSync('Dombago Bot', { font: 'Ghost', horizontalLayout: 'default' })))
     console.log(color('------------------------------------------------------------------------', 'white'))
-    console.log(color('[CREATOR]', 'aqua'), color('Thoriq Azzikra', 'magenta'))
-    console.log(color('[BOT]', 'aqua'), color('URBAE BOT is now Online!', 'magenta'))
+    console.log(color('[CREATOR]', 'aqua'), color('Rofiqur Rohman', 'magenta'))
+    console.log(color('[BOT]', 'aqua'), color('DOMBAGO BOT is now Online!', 'magenta'))
     console.log(color('[VER]', 'aqua'), color('2.10.0', 'magenta'))
-    urbae.onStateChanged((state) => {
+    dombago.onStateChanged((state) => {
         console.log(color('-> [STATE]'), state)
-        if (state === 'CONFLICT') urbae.forceRefocus()
-        if (state === 'UNPAIRED') urbae.forceRefocus()
+        if (state === 'CONFLICT') dombago.forceRefocus()
+        if (state === 'UNPAIRED') dombago.forceRefocus()
     })
 
-    urbae.onAddedToGroup(async (chat) => {
-        await urbae.sendText(chat.groupMetadata.id, 'Terima kasih sudah memasukkan bot kedalam grup kalian\nKetik /menu untuk menampilkan command')
+    dombago.onAddedToGroup(async (chat) => {
+        await dombago.sendText(chat.groupMetadata.id, 'Terima kasih sudah memasukkan bot kedalam grup kalian\nKetik /menu untuk menampilkan command')
     })
 
-    urbae.onGlobalParticipantsChanged((async (heuh) => {
-        await welcome(urbae, heuh)
-        left(urbae, heuh)
+    dombago.onGlobalParticipantsChanged((async (heuh) => {
+        await welcome(dombago, heuh)
+        left(dombago, heuh)
     }))
 
-    urbae.onMessage((message) => {
-        urbae.getAmountOfLoadedMessages()
-        .then(msg => {
-          if (msg >= 3000) {
-           urbae.cutMsgCache()
-         }
-      })
-      HandleMsg(urbae, message)
+    dombago.onMessage((message) => {
+        dombago.getAmountOfLoadedMessages()
+            .then(msg => {
+                if (msg >= 3000) {
+                    dombago.cutMsgCache()
+                }
+            })
+        HandleMsg(dombago, message)
     })
 
-    urbae.onIncomingCall(async (callData) => {
+    dombago.onIncomingCall(async (callData) => {
         // ketika seseorang menelpon nomor bot akan mengirim pesan
-        await urbae.sendText(callData.peerJid, 'Maaf sedang tidak bisa menerima panggilan.\n\n-bot')
+        await dombago.sendText(callData.peerJid, 'Maaf sedang tidak bisa menerima panggilan.\n\n-bot')
             .then(async () => {
-		await sleep(3000)
+                await sleep(3000)
                 // bot akan memblock nomor itu
-                await urbae.contactBlock(callData.peerJid)
+                await dombago.contactBlock(callData.peerJid)
             })
     })
 }
 create(options(start))
-    .then((urbae) => start(urbae))
+    .then((dombago) => start(dombago))
     .catch((err) => console.error(err))
